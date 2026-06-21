@@ -746,16 +746,9 @@ function MobileCityList({
                     ? `${sealedHere}/${city.levels.length} · here now`
                     : `${sealedHere}/${city.levels.length}`;
 
-          return (
-            <li key={city.id}>
-              <button
-                type="button"
-                onClick={isClickable ? () => onSelect(city.id) : undefined}
-                disabled={!isClickable}
-                className={`w-full flex items-center gap-4 px-4 py-4 text-left transition-colors ${next ? "border-b border-ink-10" : ""} ${
-                  selected ? "bg-paper" : "hover:bg-paper"
-                } ${isLocked ? "opacity-50 cursor-default" : ""}`}
-              >
+          const targetLevel = city.levels.length > 0 ? nextLevelOf(city, progress) : null;
+          const inner = (
+            <>
                 {/* number marker */}
                 <span
                   className="relative flex items-center justify-center w-8 h-8 rounded-full border shrink-0"
@@ -815,7 +808,32 @@ function MobileCityList({
                 {isCurrent && (
                   <span className="font-mono text-[12px] text-seal">→</span>
                 )}
-              </button>
+            </>
+          );
+
+          const rowClass = `w-full flex items-center gap-4 px-4 py-4 text-left transition-colors ${next ? "border-b border-ink-10" : ""} ${
+            selected ? "bg-paper" : ""
+          } ${isLocked ? "opacity-50" : "active:bg-paper-deep"}`;
+
+          return (
+            <li key={city.id}>
+              {isClickable && targetLevel ? (
+                <Link
+                  href={`/play/${targetLevel.id}`}
+                  onClick={() => onSelect(city.id)}
+                  className={rowClass}
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <div
+                  className={rowClass}
+                  aria-disabled={isLocked}
+                  role="listitem"
+                >
+                  {inner}
+                </div>
+              )}
             </li>
           );
         })}
