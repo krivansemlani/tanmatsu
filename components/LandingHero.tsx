@@ -148,9 +148,10 @@ export function LandingHero() {
         </div>
       )}
 
-      {/* The terminal */}
+      {/* The terminal — desktop only. On mobile the button above is the CTA
+          and the type-to-start UX doesn't work without a physical keyboard. */}
       <div
-        className="bg-term-bg text-term-fg font-mono text-[14px] leading-[1.7] rounded-[2px] overflow-hidden"
+        className="hidden md:block bg-term-bg text-term-fg font-mono text-[14px] leading-[1.7] rounded-[2px] overflow-hidden"
         style={{
           boxShadow:
             "0 1px 0 var(--color-ink-10), 0 30px 60px -30px rgba(22,22,22,0.25)",
