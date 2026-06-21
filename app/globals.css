@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Tanmatsu palette — paper, ink, seal, with ukiyo-e extensions */
+  --color-paper: #FAF6EE;
+  --color-paper-warm: #F4EDE0;
+  --color-paper-deep: #EBE2D0;
+  --color-ink: #161616;
+  --color-ink-70: rgba(22, 22, 22, 0.7);
+  --color-ink-50: rgba(22, 22, 22, 0.5);
+  --color-ink-30: rgba(22, 22, 22, 0.3);
+  --color-ink-10: rgba(22, 22, 22, 0.1);
+  --color-seal: #C8392E;
+  --color-seal-deep: #A02E25;
+  --color-jade: #7AAE6B;
+  /* ukiyo-e additions */
+  --color-indigo: #1F3A5F;     /* Hokusai ink-wash blue (sky, sea, Fuji shadow) */
+  --color-indigo-deep: #14253E; /* deepest wash */
+  --color-indigo-soft: rgba(31, 58, 95, 0.45);
+  --color-brush: #3D2E1F;      /* warm sumi ink, softer than pure black */
+
+  /* Belt progression — used semantically per world */
+  --color-belt-white: #F0EBE2;
+  --color-belt-yellow: #E8C547;
+  --color-belt-green: #5A8A4A;
+  --color-belt-brown: #6B4423;
+  --color-belt-black: #161616;
+
+  /* Inside-the-terminal palette */
+  --color-term-bg: #161616;
+  --color-term-fg: #EDE7DA;
+  --color-term-dim: rgba(237, 231, 218, 0.55);
+
+  /* Type — wired from next/font CSS variables */
+  --font-mincho: var(--font-mincho-src), "Shippori Mincho", serif;
+  --font-sans: var(--font-inter-src), system-ui, sans-serif;
+  --font-mono: var(--font-mono-src), "JetBrains Mono", ui-monospace, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html, body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Caret blink for custom terminal */
+@keyframes tanmatsu-blink {
+  to { visibility: hidden; }
+}
+.tanmatsu-cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  background: var(--color-term-fg);
+  vertical-align: -0.15em;
+  margin-left: 1px;
+  animation: tanmatsu-blink 1.1s steps(2, start) infinite;
+}
+
+/* Sakura petal drift — each petal gets a random delay/duration via inline style */
+@keyframes sakura-fall {
+  0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.85; }
+  90%  { opacity: 0.85; }
+  100% { transform: translate3d(40px, 110vh, 0) rotate(540deg); opacity: 0; }
+}
+
+@keyframes sakura-sway {
+  0%, 100% { margin-left: 0; }
+  50%      { margin-left: 60px; }
+}
+
+/* Distant cloud drift */
+@keyframes cloud-drift {
+  0%   { transform: translateX(-10%); }
+  100% { transform: translateX(110%); }
+}
+
+/* Wave gentle undulation */
+@keyframes wave-rise {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+/* Shinkansen traversing the hero — 30s pass, 30s pause */
+@keyframes train-traverse {
+  0%   { transform: translateX(-35%); }
+  50%  { transform: translateX(135%); }
+  100% { transform: translateX(135%); }
+}
+
+/* Brush stroke painting in — used for line reveals */
+@keyframes brushstroke-in {
+  from { stroke-dashoffset: var(--len, 1200); }
+  to   { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sakura-petal, .cloud-drift, .wave-rise { animation: none !important; }
 }
