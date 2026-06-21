@@ -115,11 +115,24 @@ export function LandingHero() {
             ようこそ.<br />
             <span className="text-ink-70">Welcome aboard.</span>
           </h2>
-          <p className="text-[16px] leading-[1.6] text-ink-70 mb-10 max-w-[460px]">
-            Type <code className="font-mono text-ink">start</code> to board the
-            train. Your mentor is already at the office in Shibuya waiting for
-            you.
+          <p className="text-[16px] leading-[1.6] text-ink-70 mb-6 max-w-[460px]">
+            <span className="hidden md:inline">
+              Type <code className="font-mono text-ink">start</code> to board the
+              train.
+            </span>
+            <span className="md:hidden">Tap below to board the train.</span>{" "}
+            Your mentor is already at the office in Shibuya waiting for you.
           </p>
+
+          {/* Mobile-only tap target — mobile browsers don't fire keydown
+              without a focused input, so a button is the right primitive */}
+          <button
+            type="button"
+            onClick={() => router.push("/play/tokyo-01-pwd")}
+            className="md:hidden mb-8 font-mono text-[12px] uppercase tracking-[0.18em] bg-ink text-paper px-5 py-3 hover:bg-seal transition-colors"
+          >
+            board the train →
+          </button>
         </>
       ) : (
         <div className="border-l-2 border-seal pl-[22px] mb-8 pt-1 pb-6">
